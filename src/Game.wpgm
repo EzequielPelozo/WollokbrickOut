@@ -1,0 +1,39 @@
+import wollok.game.*
+import ball.*
+import pad.*
+import brick.*
+import manager.*
+
+program Game {
+
+	game.title("BrickOut")
+	game.width(23)
+	game.height(27)
+	game.cellSize(25)
+	game.boardGround("black_background.png")
+	
+	var ball1 = new Ball()
+		ball1.drawBall()
+	// llenar y dibujar el pad	
+	pad.fillTileMap()
+	pad.drawPad()
+	//bricks
+	gameManager.fillBrickList()
+	gameManager.drawBrickList()	
+	// manejo de teclas
+	keyboard.left().onPressDo({pad.MoveLeft() if(pad.CollisionWidth()) pad.MoveRight()})	
+	keyboard.right().onPressDo({pad.MoveRight() if(pad.CollisionWidth()) pad.MoveLeft()})			
+	// game update	
+	game.onTick(150, "game update", {
+		ball1.movement() //muevo bola
+		ball1.CollisionWidthAndHeight() // chequeo colision con bordes 
+		ball1.collideWith(pad)			// chequeo colision con pad
+		gameManager.brickList().forEach({
+			brick => brick.eraseBrick(ball1)// chequeo colision con bricks
+			if(brick.collideWith(ball1)) gameManager.brickList().remove(brick)			
+		})
+	})	
+		
+	game.start()
+
+}
