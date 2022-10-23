@@ -17,9 +17,21 @@ program Game {
 	// llenar y dibujar el pad	
 	pad.fillTileMap()
 	pad.drawPad()
+	
+	//Alien
+	gameManager.fillAlienListA(5)
+	gameManager.drawAlienListA()
+	game.onTick(1000, "alien update", {
+		gameManager.changeFrameAlien()
+		gameManager.moveHorizontal()
+		if(gameManager.CollisionWidth()){
+			gameManager.moveDown()
+			gameManager.changeDirection()
+		}
+	})	
 	//bricks
-	gameManager.fillBrickList()
-	gameManager.drawBrickList()	
+	//gameManager.fillBrickList()
+	//gameManager.drawBrickList()	
 	// manejo de teclas
 	keyboard.left().onPressDo({pad.MoveLeft() if(pad.CollisionWidth()) pad.MoveRight()})	
 	keyboard.right().onPressDo({pad.MoveRight() if(pad.CollisionWidth()) pad.MoveLeft()})			
@@ -28,10 +40,10 @@ program Game {
 		ball1.movement() //muevo bola
 		ball1.CollisionWidthAndHeight() // chequeo colision con bordes 
 		ball1.collideWith(pad)			// chequeo colision con pad
-		gameManager.brickList().forEach({
-			brick => brick.eraseBrick(ball1)// chequeo colision con bricks
-			if(brick.collideWith(ball1)) gameManager.brickList().remove(brick)			
-		})
+		//gameManager.brickList().forEach({
+			//brick => brick.eraseBrick(ball1)// chequeo colision con bricks
+			//if(brick.collideWith(ball1)) gameManager.brickList().remove(brick)			
+		//})
 	})	
 		
 	game.start()
