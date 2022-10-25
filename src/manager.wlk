@@ -5,15 +5,22 @@ import brick.*
 
 object gameManager {
 
-	// crear lista de bricks
-	const property brickList = []
+	
 	
 	const property alienListA = []
 	var property alienOfset = 3
-	var property direction 
 	
+	method collisionAliensWith(aBall){
+		if(!alienListA.isEmpty()){
+			alienListA.forEach({ alien => if(alien.CanCollideWith(aBall)){
+												aBall.invertDirectionY()
+												alien.erase()
+												alienListA.remove(alien)}			
+							  })
+		} 
+		
+	}	
 	
-	//Alien game.width()/alienOfset - 1 
 	method fillAlienListA(count){
 		(0..count - 1).forEach({
 			index => alienListA.add(new Alien(position=new Position(x=index*alienOfset, y=20)))
@@ -63,24 +70,11 @@ object gameManager {
 	}
 	
 	// Colisiona lista de aliens con bordes
-	method CollisionWidth() = alienListA.first().position().x() < 1 
-						   || alienListA.last().position().x() > game.width() - alienOfset
+	method CollisionWidth() = !alienListA.isEmpty() && (alienListA.first().position().x() < 1 
+						   							 || alienListA.last().position().x() > game.width() - alienOfset)
 	
 	
 	
 	
-	//llenar ladrillos
-	method fillBrickList() {
-		(0..game.width() - 1).forEach({
-			index => brickList.add(new Brick(tile = new PieceTile(color = naranja, position = new Position(x = index, y = 20))))
-		})
-		//brickList.add(new Brick(tile = new PieceTile(color = naranja, position = new Position(x = 4, y = 20))))
-	}
-	// dibujar bricks
-	method drawBrickList() {
-			brickList.forEach({
-			brick => brick.drawBrick()
-		})
-	}	
 	
 }

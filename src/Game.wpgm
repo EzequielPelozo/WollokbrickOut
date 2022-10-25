@@ -28,22 +28,16 @@ program Game {
 			gameManager.moveDown()
 			gameManager.changeDirection()
 		}
-	})	
-	//bricks
-	//gameManager.fillBrickList()
-	//gameManager.drawBrickList()	
+	})		
 	// manejo de teclas
 	keyboard.left().onPressDo({pad.MoveLeft() if(pad.CollisionWidth()) pad.MoveRight()})	
 	keyboard.right().onPressDo({pad.MoveRight() if(pad.CollisionWidth()) pad.MoveLeft()})			
 	// game update	
 	game.onTick(150, "game update", {
-		ball1.movement() //muevo bola
-		ball1.CollisionWidthAndHeight() // chequeo colision con bordes 
-		ball1.collideWith(pad)			// chequeo colision con pad
-		//gameManager.brickList().forEach({
-			//brick => brick.eraseBrick(ball1)// chequeo colision con bricks
-			//if(brick.collideWith(ball1)) gameManager.brickList().remove(brick)			
-		//})
+		ball1.movement() 						// Muevo bola
+		ball1.CollisionWidthAndHeight() 		// Chequeo colision con bordes 
+		ball1.collideWith(pad)					// Chequeo colision con pad
+		gameManager.collisionAliensWith(ball1)  // Chequeo colision de aliens con Bola
 	})	
 		
 	game.start()
